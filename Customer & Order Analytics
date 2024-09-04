@@ -1,5 +1,8 @@
 #In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
 
+#DATA Extracted from:
+https://www.dropbox.com/scl/fi/vd10nx4bo5soq7xg78sdg/BIT_DB?rlkey=0yh592o2nl1766n8l6hod5uc9&e=1&dl=0
+
 -- 1. How many orders were placed in January? 
 SELECT COUNT(orderid) as Number_of_sales_Jan
 FROM BIT_DB.JanSales
@@ -58,3 +61,10 @@ ON cus.order_id=Feb.orderid
 WHERE length(orderid) = 6
 AND orderid <> 'Order ID'
 AND Quantity>2;
+
+--8. List all the products sold in Los Angeles in February, and include how many of each were sold.
+SELECT Product
+, Sum(Quantity) as total_product_sold
+FROM BIT_DB.FebSales
+WHERE location LIKE '%Los Angeles%'
+GROUP BY Product
