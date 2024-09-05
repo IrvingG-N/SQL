@@ -108,3 +108,26 @@ LEFT JOIN
     ON c.SupportRepId = e.EmployeeId
 ORDER BY CustomerName,SalesAgentFullName;
 
+-- How many Invoices were there in 2009?
+
+SELECT COUNT(*) as NumberOfInvoces
+,strftime('%Y', InvoiceDate) AS Year
+FROM chinook.invoices
+WHERE Year='2009';
+
+-- What are the total sales for 2009?
+
+SELECT strftime('%Y', InvoiceDate) AS Year 
+,SUM(Total) as Total
+FROM chinook.invoices
+WHERE Year='2009';
+
+-- Write a query that includes the purchased track name with each invoice line ID.
+
+SELECT t.Name
+,ii.InvoiceLineId
+FROM chinook.tracks as t
+INNER JOIN chinook.invoice_items as ii
+ON t.TrackId = ii.TrackId
+ORDER BY ii.InvoiceLineId;
+
