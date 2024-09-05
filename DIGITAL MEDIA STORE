@@ -1,0 +1,77 @@
+# For this project, I downloaded chinook data base.
+
+# I performed analytics on the data using SQLiteStudio. 
+# I explored the data using the following SQL.
+
+-- Tracks per genre:
+
+SELECT g.Name AS Genre, 
+COUNT(t.TrackId) AS NumberOfTracks
+FROM chinook.Tracks t
+JOIN chinook.Genres g 
+ON t.GenreId = g.GenreId
+GROUP BY g.GenreId
+ORDER BY NumberOfTracks DESC;
+
+-- Customer purchase behavior:
+
+SELECT c.FirstName
+, c.LastName
+, COUNT(i.InvoiceId) AS NumberOfPurchases
+, SUM(i.Total) AS TotalSpent
+FROM chinook.customers c
+JOIN chinook.invoices i 
+ON c.CustomerId = i.CustomerId
+GROUP BY c.CustomerId
+ORDER BY TotalSpent DESC;
+
+-- Total sales over time:
+
+SELECT strftime('%Y-%m', InvoiceDate) AS Month
+, SUM(Total) AS TotalSales
+FROM chinook.invoices
+GROUP BY Month
+ORDER BY Month;
+
+-- Show Customers (their full names, customer ID, and country) who are not in the US. 
+
+SELECT FirstName|| ' '||LastName as FullName
+,CustomerId
+,Country
+FROM chinook.customers
+WHERE Country <>'USA'
+
+-- Show only the Customers from Brazil.
+
+SELECT FirstName|| ' '||LastName as FullName
+,Country
+FROM chinook.customers
+WHERE Country ='Brazil'
+
+-- Find the Invoices of customers who are from Brazil. The resulting table should show the 
+--customer's full name, Invoice ID, Date of the invoice, and billing country.
+
+SELECT c.FirstName|| ' '||c.LastName as FullName
+,i.InvoiceId
+,i.InvoiceDate
+,c.Country
+FROM chinook.customers as c
+LEFT JOIN chinook.invoices as i
+ON c.CustomerId = i.CustomerId
+WHERE c.Country ='Brazil'
+
+-- Show the Employees who are Sales Agents
+
+SELECT e.FirstName
+,e.LastName
+,e.Title 
+FROM chinook.employees as e
+WHERE e.Title LIKE '%Sales%Agent%'
+
+-- Find a unique/distinct list of billing countries from the Invoice table.
+
+SELECT DISTINCT i.BillingCountry
+FROM chinook.invoices as i
+ORDER BY i.BillingCountry;
+
+
