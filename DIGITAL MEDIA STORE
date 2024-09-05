@@ -74,4 +74,21 @@ SELECT DISTINCT i.BillingCountry
 FROM chinook.invoices as i
 ORDER BY i.BillingCountry;
 
+-- Provide a query that shows the invoices associated with each sales agent. 
+--The resulting table should include the Sales Agent's full name.
+
+SELECT
+    e.FirstName || ' ' || e.LastName AS SalesAgentFullName,
+    i.InvoiceId
+FROM
+    chinook.Invoices i
+LEFT JOIN
+    chinook.Customers c 
+    ON i.CustomerId = c.CustomerId
+LEFT JOIN
+    chinook.Employees e 
+    ON c.SupportRepId = e.EmployeeId
+ORDER BY
+    SalesAgentFullName,i.InvoiceId;
+
 
