@@ -159,4 +159,23 @@ ON t.GenreId = g.GenreId
 LEFT JOIN chinook.media_types as m
 ON t.MediaTypeId = m.MediaTypeId;
 
+-- Which sales agent made the most dollars in sales in 2009?
+
+WITH Sales2009 AS (SELECT e.FirstName
+, e.LastName
+,ROUND(SUM (i.Total),2) as TotalSales
+,strftime('%Y', i.InvoiceDate) AS Year 
+FROM invoices as i
+LEFT JOIN customers as c
+ON i.CustomerId = c.CustomerId
+LEFT JOIN employees as e
+ON c.SupportRepId = e.EmployeeId
+WHERE Year ='2009'
+GROUP BY e.EmployeeId)
+
+SELECT FirstName
+,LastName
+,MAX(TotalSales) as TopSales2009
+FROM Sales2009;
+
 
